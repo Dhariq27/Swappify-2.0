@@ -14,7 +14,11 @@ const Browse = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState("all");
 
-  const filteredSkills = mockSkills.filter(skill => {
+  // For now, use mock skills since database skills don't have all required fields
+  // In the future, we'll transform database skills or update the SkillCard component
+  const skills = mockSkills;
+
+  const filteredSkills = skills.filter(skill => {
     const matchesSearch = skill.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          skill.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "all" || skill.category.toLowerCase().includes(selectedCategory);
@@ -82,22 +86,6 @@ const Browse = () => {
                             {category.icon} {category.name}
                           </SelectItem>
                         ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Difficulty Filter */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Difficulty</label>
-                    <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="All levels" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All levels</SelectItem>
-                        <SelectItem value="Beginner">Beginner</SelectItem>
-                        <SelectItem value="Intermediate">Intermediate</SelectItem>
-                        <SelectItem value="Advanced">Advanced</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -205,15 +193,6 @@ const Browse = () => {
                     }}
                   >
                     Clear All Filters
-                  </Button>
-                </div>
-              )}
-
-              {/* Load More */}
-              {filteredSkills.length > 0 && (
-                <div className="text-center mt-12">
-                  <Button variant="outline" size="lg">
-                    Load More Skills
                   </Button>
                 </div>
               )}

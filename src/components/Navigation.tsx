@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   Search, 
@@ -8,12 +8,35 @@ import {
   User, 
   Menu,
   X,
-  Handshake
+  Handshake,
+  LogOut
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("Signed out successfully");
+    navigate("/");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -32,15 +55,14 @@ const Navigation = () => {
             <Link to="/browse" className="text-foreground hover:text-primary transition-colors">
               Browse Skills
             </Link>
-            <Link to="/teach" className="text-foreground hover:text-primary transition-colors">
-              Teach
-            </Link>
-            <Link to="/learn" className="text-foreground hover:text-primary transition-colors">
-              Learn
-            </Link>
-            <Link to="/how-it-works" className="text-foreground hover:text-primary transition-colors">
+            <a href="/#how-it-works" className="text-foreground hover:text-primary transition-colors">
               How it Works
-            </Link>
+            </a>
+            {user && (
+              <Link to="/profile" className="text-foreground hover:text-primary transition-colors">
+                Profile
+              </Link>
+            )}
           </div>
 
           {/* Search Bar */}
@@ -50,30 +72,45 @@ const Navigation = () => {
               <Input 
                 placeholder="Search skills..." 
                 className="pl-10 bg-muted/50 border-border"
+                onFocus={() => navigate('/browse')}
               />
             </div>
           </div>
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative">
-              <MessageCircle className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                3
-              </span>
-            </Button>
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                2
-              </span>
-            </Button>
-            <Button variant="ghost" size="sm">
-              <User className="h-5 w-5" />
-            </Button>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              Sign In
-            </Button>
+            {user ? (
+              <>
+                <Button variant="ghost" size="sm" className="relative" onClick={() => navigate('/chat')}>
+                  <MessageCircle className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    3
+                  </span>
+                </Button>
+                <Button variant="ghost" size="sm" className="relative">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    2
+                  </span>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => navigate('/profile')}>
+                  <User className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={() => navigate('/auth')}>
+                  Sign In
+                </Button>
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => navigate('/auth')}>
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,27 +131,35 @@ const Navigation = () => {
                 <Input 
                   placeholder="Search skills..." 
                   className="pl-10 bg-muted/50 border-border"
+                  onFocus={() => navigate('/browse')}
                 />
               </div>
-              <Link to="/browse" className="text-foreground hover:text-primary transition-colors py-2">
+              <Link to="/browse" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMenuOpen(false)}>
                 Browse Skills
               </Link>
-              <Link to="/teach" className="text-foreground hover:text-primary transition-colors py-2">
-                Teach
-              </Link>
-              <Link to="/learn" className="text-foreground hover:text-primary transition-colors py-2">
-                Learn
-              </Link>
-              <Link to="/how-it-works" className="text-foreground hover:text-primary transition-colors py-2">
+              <a href="/#how-it-works" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMenuOpen(false)}>
                 How it Works
-              </Link>
+              </a>
+              {user && (
+                <Link to="/profile" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMenuOpen(false)}>
+                  Profile
+                </Link>
+              )}
               <div className="flex space-x-4 pt-4 border-t border-border">
-                <Button variant="outline" className="flex-1">
-                  Sign In
-                </Button>
-                <Button className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Get Started
-                </Button>
+                {user ? (
+                  <Button variant="outline" className="flex-1" onClick={handleSignOut}>
+                    Sign Out
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="outline" className="flex-1" onClick={() => navigate('/auth')}>
+                      Sign In
+                    </Button>
+                    <Button className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => navigate('/auth')}>
+                      Get Started
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

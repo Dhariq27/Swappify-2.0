@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, BookOpen, MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-skills.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
       {/* Background with gradient overlay */}
@@ -24,11 +27,19 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground group">
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-primary-foreground group"
+                onClick={() => navigate('/auth')}
+              >
                 Start Trading Skills
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg">
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => navigate('/browse')}
+              >
                 Browse Skills
               </Button>
             </div>

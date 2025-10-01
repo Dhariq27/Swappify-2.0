@@ -39,7 +39,7 @@ const Landing = () => {
           </div>
           
           <div className="text-center">
-            <Button variant="outline" size="lg">
+            <Button variant="outline" size="lg" onClick={() => window.location.href = '/browse'}>
               View All Skills
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -79,7 +79,7 @@ const Landing = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16">
+      <section id="how-it-works" className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">
@@ -174,10 +174,20 @@ const Landing = () => {
             Join thousands of learners and teachers in our growing community
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="bg-white text-primary hover:bg-white/90"
+              onClick={() => window.location.href = '/auth'}
+            >
               Sign Up Free
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-white text-white hover:bg-white/10"
+              onClick={() => window.location.href = '/browse'}
+            >
               Browse Skills
             </Button>
           </div>
