@@ -21,8 +21,7 @@ import {
 const Chat = () => {
   const [selectedChat, setSelectedChat] = useState(mockChats[0]);
   const [message, setMessage] = useState("");
-
-  const mockMessages = [
+  const [chatMessages, setChatMessages] = useState([
     {
       id: '1',
       sender: 'Sarah Johnson',
@@ -58,12 +57,18 @@ const Chat = () => {
       timestamp: '2024-01-15T10:30:00Z',
       isOwn: false
     }
-  ];
+  ]);
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      // In a real app, this would send the message via API
-      console.log('Sending message:', message);
+      const newMessage = {
+        id: Date.now().toString(),
+        sender: 'You',
+        content: message,
+        timestamp: new Date().toISOString(),
+        isOwn: true
+      };
+      setChatMessages([...chatMessages, newMessage]);
       setMessage("");
     }
   };
@@ -181,7 +186,7 @@ const Chat = () => {
               <div className="flex-1 flex flex-col">
                 <ScrollArea className="flex-1 p-4">
                   <div className="space-y-4">
-                    {mockMessages.map(msg => (
+                    {chatMessages.map(msg => (
                       <div
                         key={msg.id}
                         className={`flex ${msg.isOwn ? 'justify-end' : 'justify-start'}`}
