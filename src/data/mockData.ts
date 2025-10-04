@@ -5,7 +5,7 @@ export const mockSkills = [
     description: 'I can teach you guitar from beginner to intermediate level. We\'ll cover basic chords, strumming patterns, and your favorite songs.',
     category: 'Music',
     teacher: {
-      name: 'Sarah Johnson',
+      name: 'monish',
       avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b913?w=150&h=150&fit=crop&crop=face',
       rating: 4.9,
       location: 'San Francisco, CA'
@@ -21,7 +21,7 @@ export const mockSkills = [
     description: 'Master DSLR photography, composition, lighting, and post-processing with Lightroom and Photoshop.',
     category: 'Photography',
     teacher: {
-      name: 'Mike Chen',
+      name: 'asif',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       rating: 4.8,
       location: 'New York, NY'
@@ -37,7 +37,7 @@ export const mockSkills = [
     description: 'Learn React, Node.js, and modern web development. Build real projects and deploy them to production.',
     category: 'Technology',
     teacher: {
-      name: 'Alex Rivera',
+      name: 'monish',
       avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
       rating: 5.0,
       location: 'Austin, TX'
@@ -53,7 +53,7 @@ export const mockSkills = [
     description: 'Native Italian speaker offering conversational practice, grammar lessons, and cultural insights.',
     category: 'Languages',
     teacher: {
-      name: 'Elena Rossi',
+      name: 'asif',
       avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
       rating: 4.7,
       location: 'Los Angeles, CA'
@@ -69,7 +69,7 @@ export const mockSkills = [
     description: 'Learn digital painting, character design, and illustration using Procreate and Adobe Creative Suite.',
     category: 'Art & Design',
     teacher: {
-      name: 'Jordan Kim',
+      name: 'monish',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
       rating: 4.9,
       location: 'Seattle, WA'
@@ -85,7 +85,7 @@ export const mockSkills = [
     description: 'Certified yoga instructor offering Hatha and Vinyasa classes, plus meditation and breathing techniques.',
     category: 'Health & Wellness',
     teacher: {
-      name: 'Maya Patel',
+      name: 'asif',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
       rating: 4.8,
       location: 'Denver, CO'
@@ -110,7 +110,7 @@ export const mockCategories = [
 
 export const mockUser = {
   id: 'user-1',
-  name: 'John Doe',
+  name: 'Mohammed Dhariq I B',
   avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop&crop=face',
   location: 'San Francisco, CA',
   rating: 4.7,
@@ -140,7 +140,7 @@ export const mockChats = [
   {
     id: 'chat-1',
     participant: {
-      name: 'Sarah Johnson',
+      name: 'monish',
       avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b913?w=150&h=150&fit=crop&crop=face'
     },
     lastMessage: 'Sounds great! When would you like to start the guitar lessons?',
@@ -154,7 +154,7 @@ export const mockChats = [
   {
     id: 'chat-2',
     participant: {
-      name: 'Mike Chen',
+      name: 'asif',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
     },
     lastMessage: 'I can teach you photography basics this weekend if you\'re free',
@@ -171,7 +171,7 @@ export const mockBarterRequests = [
   {
     id: 'request-1',
     from: {
-      name: 'Elena Rossi',
+      name: 'asif',
       avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face'
     },
     skillOffered: 'Italian Language Tutoring',
@@ -183,7 +183,7 @@ export const mockBarterRequests = [
   {
     id: 'request-2',
     from: {
-      name: 'Jordan Kim',
+      name: 'monish',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face'
     },
     skillOffered: 'Digital Art Lessons',
