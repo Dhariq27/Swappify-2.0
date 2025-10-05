@@ -30,7 +30,7 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 className="bg-primary hover:bg-primary/90 text-primary-foreground group"
-                onClick={() => navigate('/auth')}
+                onClick={() => navigate('/browse')}
               >
                 Start Trading Skills
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

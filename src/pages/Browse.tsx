@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import SkillCard from "@/components/SkillCard";
 import { Input } from "@/components/ui/input";
@@ -9,10 +10,18 @@ import { mockSkills, mockCategories } from "@/data/mockData";
 import { Search, Filter, SlidersHorizontal } from "lucide-react";
 
 const Browse = () => {
+  const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState("all");
+
+  useEffect(() => {
+    const category = searchParams.get('category');
+    if (category) {
+      setSelectedCategory(category.toLowerCase());
+    }
+  }, [searchParams]);
 
   // For now, use mock skills since database skills don't have all required fields
   // In the future, we'll transform database skills or update the SkillCard component

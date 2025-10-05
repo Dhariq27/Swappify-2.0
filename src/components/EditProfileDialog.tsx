@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,29 @@ const EditProfileDialog = ({ currentUser, onSave }: EditProfileDialogProps) => {
   const [location, setLocation] = useState(currentUser.location);
   const [bio, setBio] = useState(currentUser.bio);
   const [avatarUrl, setAvatarUrl] = useState(currentUser.avatar);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserId(session?.user?.id || null);
+      // Load saved profile data from Supabase
+      if (session?.user?.id) {
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data }) => {
+            if (data) {
+              setName(data.full_name || currentUser.name);
+              setLocation(data.location || currentUser.location);
+              setBio(data.bio || currentUser.bio);
+              setAvatarUrl(data.avatar_url || currentUser.avatar);
+            }
+          });
+      }
+    });
+  }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,9 +61,31 @@ const EditProfileDialog = ({ currentUser, onSave }: EditProfileDialogProps) => {
     }
   };
 
-  const handleSave = () => {
-    onSave({ name, location, bio, avatar: avatarUrl });
-    toast.success("Profile updated successfully!");
+  const handleSave = async () => {
+    if (userId) {
+      try {
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            full_name: name,
+            location: location,
+            bio: bio,
+            avatar_url: avatarUrl,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', userId);
+
+        if (error) throw error;
+        
+        onSave({ name, location, bio, avatar: avatarUrl });
+        toast.success("Profile saved to database!");
+      } catch (error: any) {
+        toast.error("Failed to save: " + error.message);
+      }
+    } else {
+      onSave({ name, location, bio, avatar: avatarUrl });
+      toast.success("Profile updated!");
+    }
     setOpen(false);
   };
 

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import EditProfileDialog from "@/components/EditProfileDialog";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,30 @@ const Profile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(mockUser);
   const [requests, setRequests] = useState(mockBarterRequests);
+
+  useEffect(() => {
+    // Load user profile from Supabase on mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user?.id) {
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data }) => {
+            if (data) {
+              setUser(prev => ({
+                ...prev,
+                name: data.full_name || prev.name,
+                location: data.location || prev.location,
+                bio: data.bio || prev.bio,
+                avatar: data.avatar_url || prev.avatar,
+              }));
+            }
+          });
+      }
+    });
+  }, []);
 
   const handleSaveProfile = (updatedUser: any) => {
     setUser({ ...user, ...updatedUser });

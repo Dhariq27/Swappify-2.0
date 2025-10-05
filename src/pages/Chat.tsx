@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
+import ChatInput from "@/components/ChatInput";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -58,6 +60,35 @@ const Chat = () => {
       isOwn: false
     }
   ]);
+
+  // Real-time messaging with Supabase
+  useEffect(() => {
+    const channel = supabase
+      .channel('chat-messages')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages'
+        },
+        (payload) => {
+          const newMsg = payload.new as any;
+          setChatMessages(prev => [...prev, {
+            id: newMsg.id,
+            sender: newMsg.sender_id === 'current-user' ? 'You' : selectedChat.participant.name,
+            content: newMsg.content,
+            timestamp: newMsg.created_at,
+            isOwn: newMsg.sender_id === 'current-user'
+          }]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedChat]);
 
   const handleSendMessage = () => {
     if (message.trim()) {
@@ -214,36 +245,11 @@ const Chat = () => {
                 </ScrollArea>
 
                 {/* Message Input */}
-                <div className="p-4 border-t border-border">
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm">
-                      <Paperclip className="h-4 w-4" />
-                    </Button>
-                    <div className="flex-1 relative">
-                      <Input
-                        placeholder="Type your message..."
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                        className="pr-10"
-                      />
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="absolute right-1 top-1/2 transform -translate-y-1/2"
-                      >
-                        <Smile className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <Button 
-                      onClick={handleSendMessage}
-                      disabled={!message.trim()}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                    >
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+                <ChatInput 
+                  message={message}
+                  setMessage={setMessage}
+                  onSendMessage={handleSendMessage}
+                />
               </div>
             </Card>
           </div>

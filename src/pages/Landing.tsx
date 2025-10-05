@@ -64,6 +64,7 @@ const Landing = () => {
               <div 
                 key={category.id}
                 className="bg-card p-6 rounded-xl border border-border card-hover cursor-pointer text-center group"
+                onClick={() => window.location.href = `/browse?category=${encodeURIComponent(category.name)}`}
               >
                 <div className="text-4xl mb-3">{category.icon}</div>
                 <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
@@ -178,7 +179,7 @@ const Landing = () => {
               size="lg" 
               variant="secondary" 
               className="bg-white text-primary hover:bg-white/90"
-              onClick={() => window.location.href = '/auth'}
+              onClick={() => window.location.href = '/auth?mode=signup'}
             >
               Sign Up Free
             </Button>
