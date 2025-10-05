@@ -16,12 +16,13 @@
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
-    <link rel="icon" href="/favicon.ico" />
+    <!-- Use relative path for favicon -->
+    <link rel="icon" href="favicon.ico" />
   </head>
 
   <body>
     <div id="root"></div>
-    <!-- Leave the source as TSX; Vite will replace during build -->
+    <!-- Vite automatically bundles src/main.tsx; reference it like this -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
