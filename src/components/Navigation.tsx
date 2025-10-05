@@ -47,7 +47,7 @@ const Navigation = () => {
             <div className="p-2 bg-primary rounded-lg">
               <Handshake className="h-6 w-6 text-primary-foreground" />
             </div>
-            <span className="font-bold text-xl text-gradient">SkillSwap</span>
+            <span className="font-bold text-xl text-gradient">Swappify</span>
           </Link>
 
           {/* Desktop Navigation */}
