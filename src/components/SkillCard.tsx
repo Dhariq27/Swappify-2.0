@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { 
   Star, 
   MapPin, 
@@ -30,6 +32,8 @@ interface SkillCardProps {
 }
 
 const SkillCard = ({ skill }: SkillCardProps) => {
+  const navigate = useNavigate();
+  
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'Beginner': return 'bg-success/10 text-success border-success/20';
@@ -37,6 +41,15 @@ const SkillCard = ({ skill }: SkillCardProps) => {
       case 'Advanced': return 'bg-destructive/10 text-destructive border-destructive/20';
       default: return 'bg-muted/10 text-muted-foreground border-muted/20';
     }
+  };
+
+  const handleProposeSwap = () => {
+    toast.success(`Swap request sent to ${skill.teacher.name}!`);
+    navigate('/chat');
+  };
+
+  const handleMessage = () => {
+    navigate('/chat');
   };
 
   return (
@@ -126,10 +139,13 @@ const SkillCard = ({ skill }: SkillCardProps) => {
       </CardContent>
 
       <CardFooter className="gap-2">
-        <Button className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
+        <Button 
+          className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
+          onClick={handleProposeSwap}
+        >
           Propose Swap
         </Button>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" onClick={handleMessage}>
           <MessageCircle className="h-4 w-4" />
         </Button>
       </CardFooter>

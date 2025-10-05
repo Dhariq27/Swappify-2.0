@@ -9,6 +9,7 @@ import Browse from "./pages/Browse";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
 import Auth from "./pages/Auth";
+import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

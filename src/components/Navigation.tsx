@@ -55,9 +55,17 @@ const Navigation = () => {
             <Link to="/browse" className="text-foreground hover:text-primary transition-colors">
               Browse Skills
             </Link>
-            <a href="/#how-it-works" className="text-foreground hover:text-primary transition-colors">
+            <button 
+              onClick={() => {
+                navigate('/');
+                setTimeout(() => {
+                  document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
+              className="text-foreground hover:text-primary transition-colors"
+            >
               How it Works
-            </a>
+            </button>
             {user && (
               <Link to="/profile" className="text-foreground hover:text-primary transition-colors">
                 Profile
@@ -87,7 +95,7 @@ const Navigation = () => {
                     3
                   </span>
                 </Button>
-                <Button variant="ghost" size="sm" className="relative">
+                <Button variant="ghost" size="sm" className="relative" onClick={() => navigate('/notifications')}>
                   <Bell className="h-5 w-5" />
                   <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     2
@@ -137,9 +145,18 @@ const Navigation = () => {
               <Link to="/browse" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMenuOpen(false)}>
                 Browse Skills
               </Link>
-              <a href="/#how-it-works" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMenuOpen(false)}>
+              <button 
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  navigate('/');
+                  setTimeout(() => {
+                    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }}
+                className="text-foreground hover:text-primary transition-colors py-2 text-left"
+              >
                 How it Works
-              </a>
+              </button>
               {user && (
                 <Link to="/profile" className="text-foreground hover:text-primary transition-colors py-2" onClick={() => setIsMenuOpen(false)}>
                   Profile
