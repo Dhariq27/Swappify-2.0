@@ -5,15 +5,21 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/Skill-Swap/", // <-- Add this line
+  base: "/Swappify/", // Must match your GitHub repo name (case-sensitive)
   server: {
     host: "::",
     port: 8080,
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [
+    react(),
+    mode === "development" && componentTagger() // Only in dev
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    chunkSizeWarningLimit: 1000, // Optional, prevents big chunk warnings
   },
 }));
