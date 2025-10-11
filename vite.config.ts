@@ -3,9 +3,9 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
+// Vite configuration
 export default defineConfig(({ mode }) => ({
-  base: "/Swappify-2.0/", // Use relative paths for GitHub Pages
+  base: "/Swappify-2.0/", // GitHub repo name for production
   server: {
     host: "::",
     port: 8080,
@@ -20,6 +20,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    chunkSizeWarningLimit: 1000, // Optional, prevents big chunk warnings
+    chunkSizeWarningLimit: 1000,
   },
 }));
