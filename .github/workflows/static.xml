@@ -1,0 +1,50 @@
+<workflow name="Deploy static content to Pages">
+  <trigger>
+    <push>
+      <branches>
+        <branch>main</branch>
+      </branches>
+    </push>
+    <workflow_dispatch />
+  </trigger>
+
+  <permissions>
+    <contents>read</contents>
+    <pages>write</pages>
+    <id-token>write</id-token>
+  </permissions>
+
+  <concurrency>
+    <group>pages</group>
+    <cancel-in-progress>false</cancel-in-progress>
+  </concurrency>
+
+  <jobs>
+    <job id="deploy" runs-on="ubuntu-latest">
+      <environment>
+        <name>github-pages</name>
+        <url>${{ steps.deployment.outputs.page_url }}</url>
+      </environment>
+      <steps>
+        <step name="Checkout">
+          <uses>actions/checkout@v4</uses>
+        </step>
+
+        <step name="Setup Pages">
+          <uses>actions/configure-pages@v5</uses>
+        </step>
+
+        <step name="Upload artifact">
+          <uses>actions/upload-pages-artifact@v3</uses>
+          <with>
+            <path>.</path>
+          </with>
+        </step>
+
+        <step name="Deploy to GitHub Pages" id="deployment">
+          <uses>actions/deploy-pages@v4</uses>
+        </step>
+      </steps>
+    </job>
+  </jobs>
+</workflow>
